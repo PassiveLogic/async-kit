@@ -1,6 +1,12 @@
 // swift-tools-version:5.10
 import PackageDescription
 
+/// This list matches the [supported platforms on the Swift 5.10 release of SPM](https://github.com/swiftlang/swift-package-manager/blob/release/5.10/Sources/PackageDescription/SupportedPlatforms.swift#L34-L71)
+/// Don't add new platforms here unless raising the swift-tools-version of this manifest.
+let allPlatforms: [Platform] = [.macOS, .macCatalyst, .iOS, .tvOS, .watchOS, .visionOS, .driverKit, .linux, .windows, .android, .wasi, .openbsd]
+let nonWASIPlatforms: [Platform] = allPlatforms.filter { $0 != .wasi }
+let wasiPlatform: [Platform] = [.wasi]
+
 let package = Package(
     name: "async-kit",
     platforms: [
@@ -25,9 +31,11 @@ let package = Package(
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOEmbedded", package: "swift-nio", condition: .when(platforms: nonWASIPlatforms)),
+                .product(name: "NIOPosix", package: "swift-nio", condition: .when(platforms: nonWASIPlatforms)),
                 .product(name: "Collections", package: "swift-collections"),
                 .product(name: "Algorithms", package: "swift-algorithms"),
-                .product(name: "DispatchAsync", package: "swift-dispatch-async", condition: .when(platforms: [.wasi]))
+                .product(name: "DispatchAsync", package: "swift-dispatch-async", condition: .when(platforms: wasiPlatform))
             ],
             swiftSettings: swiftSettings
         ),
