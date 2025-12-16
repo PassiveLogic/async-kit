@@ -1,4 +1,8 @@
+#if canImport(Dispatch)
 import Dispatch
+#elseif canImport(DispatchAsync)
+import DispatchAsync
+#endif
 import NIOConcurrencyHelpers
 import NIOCore
 import struct Logging.Logger
@@ -280,6 +284,7 @@ public final class EventLoopGroupConnectionPool<Source> where Source: Connection
         }
     }
 
+    #if !os(WASI)
     /// Closes the connection pool.
     ///
     /// All available connections will be closed immediately. Any connections still in use will be
@@ -312,6 +317,7 @@ public final class EventLoopGroupConnectionPool<Source> where Source: Connection
             }
         }
     }
+    #endif  // !os(WASI)
 
     /// Closes the connection pool.
     ///
