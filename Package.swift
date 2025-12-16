@@ -23,7 +23,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.5.3"),
         .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.5"),
         .package(url: "https://github.com/apple/swift-algorithms.git", from: "1.1.0"),
-        .package(url: "https://github.com/PassiveLogic/swift-dispatch-async.git", from: "0.0.1"),
+        .package(url: "https://github.com/PassiveLogic/swift-dispatch-async.git", from: "1.0.0"),
     ],
     targets: [
         .target(
